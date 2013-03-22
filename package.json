@@ -1,0 +1,9 @@
+{
+    "name": "mtg",
+    "version": "0.1.0",
+    "description": "an mtg search app",
+    "dependencies": {
+        "jsdom": "0.5.3",
+        "express": "2.5.0"
+    }
+}
