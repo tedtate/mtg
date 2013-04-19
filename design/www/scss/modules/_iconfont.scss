@@ -1,0 +1,1524 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//// ICON FONTS
+//
+//// Use this module to include icon fonts in your project.
+//
+//// To use, add '@include icon(ICONNAME);' or '@include icon-social(ICONNAME);' to the element to which you want to add an icon.
+//// Icon names can be found in the Icon Document (INSERT URL) or by searching through this module.
+//
+//// For example:
+////    h1 {
+////        font-size: 18px;
+////        @include icon(home);
+////    }
+//// OR
+////    p {
+////        @include icon-social(facebook, $replace: true, $size: 24px, color: blue);
+////    }
+//
+//// By default, it will place icons immediately before the text in the element with the same font size and color.
+//// You can control the position, whether it replaces the text, the size, and the color with variables.
+//
+//// Variables:
+////    $position -- Controls the position of the icon.
+////        Settings:
+////            'before' -- Default setting. Places the icon before the text
+////            'after' -- Places the icon after the text
+////        Example: @include icon(home, $position: after);
+//
+////    $replace -- Controls whether the icon should replace the text.
+////        Settings:
+////            'false' -- Default setting. Doesn't replace the text
+////            'true' -- Replaces the text with the icon
+////                NOTE: YOU MUST SPECIFY A $COLOR IF YOU ARE REPLACING
+//
+////    $size -- Controls the absolute size of the icon when $replace is set to true.
+////        Settings:
+////            '13px' -- Default setting. 
+////            Any pixel value -- Will size the icon accordingly to any pixel value.
+//
+////    $color -- Controls the color of the icon.
+////        Settings:
+////            'inherit' -- Default setting. Inherits the color of the parent.
+////            Any color value -- Will color the icon according to the color value.
+//
+//
+//// DEFAULT SETTINGS:
+//
+//// Set a variable so we can check for whether we have icon fonts elsewhere
+$isIconFont: true;
+//
+//// Import Compass's font-face helper
+//
+@import "compass/css3/font-face";
+//
+//// STANDARD ICONSETS:
+//
+//// Choose the iconset you would like to use
+//
+// $fontname: 'iconsweets' !default; // IconSweets (http://iconsweets2.com/)
+$fontname: 'symbolset'; // Symbolset Standard (http://www.symbolset.com)
+// $fontname: 'fontawesome'; // Font Awesome More (http://gregoryloucas.github.com/Font-Awesome-More/)
+//
+//// SOCIAL ICONSETS:
+//// We don't include social iconsets by default with our projects. Uncomment to enable. 
+//
+$socialtype: false !default;
+$socialtype: 'social'; // General Social Icons
+// $socialtype: 'social-circle'; // Icons with circles surrounding them
+//
+//// Set the path to the font files
+//
+$fontpath: 'icons/#{$fontname}/#{$fontname}-webfont';
+$socialpath: false !default;
+@if $socialtype {
+    $socialpath: 'icons/#{$socialtype}/#{$socialtype}';
+}
+//
+//// Let's include the right font depending on what was set above
+//
+@include font-face(
+    $fontname,
+    font-files(
+        "#{$fontpath}.woff", woff,
+        "#{$fontpath}.ttf", truetype,
+        "#{$fontpath}.svg", svg
+        ),
+    '#{$fontpath}.eot',
+    normal,
+    normal
+);
+//
+//// This is the SOCIAL icon set. Only load the font if one is turned on.
+//
+@if $socialtype {
+    @include font-face(
+        $socialtype,
+        font-files(
+            "#{$socialpath}.woff", woff,
+            "#{$socialpath}.ttf", truetype,
+            "#{$socialpath}.svg", svg
+            ),
+        '#{$socialpath}.eot',
+        normal,
+        normal
+    );
+}
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//// BASE MIXINS
+//
+//// These settings are shared between icon() and socialicon()
+@mixin iconsettings($replace: false, $position: 'before', $size: inherit, $color: inherit) {
+    
+    // Default style
+    // Positions the icon before or after the text
+    &:#{$position} {
+        display: inline-block;
+        font: { 
+            family: $fontname;
+            weight: normal;
+            style: normal;
+            size: $size;
+        }
+        color: $color;
+        vertical-align: middle;
+        text-decoration: inherit;
+
+        // Apply appropriate margins whether it's before or after;
+        @if $position == 'before' {
+            margin-right: 0.25em;
+        }
+        @else if $position == 'after' {
+            margin-left: 0.25em;
+        }
+        
+        // Adjust the icon depending on size variables
+        @if $size == 'large' {
+            vertical-align: middle;
+        }
+    }
+
+    // Replace the text with an icon, size in this instance is a pixel value
+    @if $replace {
+        position: relative;
+        font-size: 1px;
+        letter-spacing: -1px;
+        color: transparent;
+        text-align: center;
+        vertical-align: middle;
+        &:#{$position} {
+            position: absolute;
+            left: 50%;
+            display: inline-block;
+            margin: 0 0 0 (-($size/2));
+            font-size: $size;
+            line-height: inherit;
+            color: $color;
+        }
+
+        // Android doesn't support font-size: 0; so we have to set the color to transparent. That means we have to reset color on the icon.
+        @if $color == 'inherit' {
+            @warn "You must declare $color if you're using replace. Otherwise, this won't work on Android.";
+        }
+    } 
+
+    &:#{$position} {
+        text-rendering:optimizeLegibility; // This enables ligatures for iOS
+        // Set font-feature settings (No mixin for this yet, so let's declare em all)
+        -webkit-font-feature-settings: "liga", "dlig";
+        -moz-font-feature-settings: "liga=1, dlig=1";
+        -moz-font-feature-settings: "liga", "dlig";
+        -ms-font-feature-settings: "liga", "dlig";
+        -o-font-feature-settings: "liga", "dlig";
+        font-feature-settings: "liga", "dlig";
+    }
+}
+//
+//// These are the standard icons
+//
+@mixin icon($type, $replace: false, $position: 'before', $size: 13px, $color: inherit) {
+    @include iconsettings($replace, $position, $size, $color);
+    
+    // Now we do all of the icons!
+
+    &:#{$position} {
+        @include icon-naming($type, $set: standard);
+    }
+}
+//
+//// These are the social icons
+//
+@mixin icon-social($type, $replace: false, $position: 'before', $size: 13px, $color: inherit) {
+    
+    @include iconsettings($replace, $position, $size, $color);
+
+    // Only do this if Social Type is set
+    @if $socialtype {
+        &:#{$position} {
+            font-family: $socialtype;
+            @include icon-naming($type, $set: social)
+        }
+    }
+    // Error out if there's no Social Set Declared
+    @else if $socialtype == false {
+        &:#{$position} {
+            font-family: 'Helvetica';
+            color: red;
+            content: 'No Social Icon Set Declared';
+            @warn "You've tried to use Social Icons without declaring an iconset.";
+        }
+    }
+}
+
+@mixin icon-naming($type, $set: standard) {
+
+    // Icons are specified with their appropriate character.
+    // Icon names should be specific to their content. They should also allow for varied usage. For instance, house/home.
+    //
+    // Font sets should be declared in this order:
+    // 1. Iconsweets
+    // 2. Symbolset
+    // 3. FontAwesome More
+    //
+    // All icons should follow this format when inserting new ones:
+    //
+    // @if $type == ICONNAME {
+    //     @if $fontname == 'FONTSET' {
+    //         content: 'CHARACTER';
+    //     }
+    // }
+
+    // Icon names for the Standard Sets
+    @if $set == standard {
+        @if $type == location {
+            @if $fontname == 'iconsweets' {
+                content: '`'; // 
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f041';
+            }
+        }
+        
+        @elseif $type == home or $type == house {
+            @if $fontname == 'iconsweets' {
+                content: '0'; // 
+            }
+            @if $fontname == 'symbolset' {
+                content: '⌂';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f015';
+            }
+        }
+        
+        @elseif $type == home-alt or $type == house-alt {
+            @if $fontname == 'iconsweets' {
+                content: '1'; // 
+            }
+            @if $fontname == 'symbolset' {
+                content: '⌂'; // Same as 'home'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f015'; // Same as 'home'
+            }
+        }
+        
+        @elseif $type == picture or $type == image or $type == photo or $type == photograph {
+            @if $fontname == 'iconsweets' {
+                content: '2'; // 
+            }
+            @if $fontname == 'symbolset' {
+                content: '🌄';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f03e';
+            }
+        }
+        
+        @elseif $type == pictures or $type == images or $type == photos or $type == photographs {
+            @if $fontname == 'iconsweets' {
+                content: '3'; // 
+            }
+            @if $fontname == 'symbolset' {
+                content: '🌄'; // Same as 'picture'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f03e'; // Same as 'picture'
+            }
+        }
+        
+        @elseif $type == mic or $type == microphone or $type == dictate {
+            @if $fontname == 'iconsweets' {
+                content: '4'; //
+            }
+            @if $fontname == 'symbolset' {
+                content: '🎤';
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == volume or $type == speaker or $type == sound or $type == volume-off {
+            @if $fontname == 'iconsweets' {
+                content: '5'; // 
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔈';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f026';
+            }
+        }
+        
+        @elseif $type == volume-low or $type == speaker-low or $type == sound-low {
+            @if $fontname == 'iconsweets' {
+                content: '5'; // Same as 'volume'
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔉';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f027';
+            }
+        }
+        
+        @elseif $type == volume-high or $type == speaker-high or $type == sound-high {
+            @if $fontname == 'iconsweets' {
+                content: '5'; // Same as 'volume'
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔊';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f028';
+            }
+        }
+        
+        @elseif $type == bullhorn {
+            @if $fontname == 'iconsweets' {
+                content: '6';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0a1';
+            }
+        }
+        
+        @elseif $type == signpost or $type == directions {
+            @if $fontname == 'iconsweets' {
+                content: '7';
+            }
+            @if $fontname == 'symbolset' {
+                content: ''
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == pencil or $type == write {
+            @if $fontname == 'iconsweets' {
+                content: '8';
+            }
+            @if $fontname == 'symbolset' {
+                content: '✎';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f040';
+            }
+        }
+        
+        @elseif $type == brush or $type == paint {
+            @if $fontname == 'iconsweets' {
+                content: '9';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == brush-alt or $type == paint-alt {
+            @if $fontname == 'iconsweets' {
+                content: ':';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == brush-alt2 or $type == paint-alt2 {
+            @if $fontname == 'iconsweets' {
+                content: ';';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == user or $type == avatar or $type == male-user or $type == maleuser or $type == male-avatar or $type == maleavatar or $type == user-male or $type == usermale or $type == avatar-male or $type == avatarmale {
+            @if $fontname == 'iconsweets' {
+                content: 'a';
+            }
+            @if $fontname == 'symbolset' {
+                content: '👤';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f007';
+            }
+        }
+        
+        @elseif $type == user-alt or $type == avatar-alt or $type == male-user-alt or $type == maleuser-alt or $type == male-avatar-alt or $type == maleavatar-alt or $type == user-male-alt or $type == usermale-alt or $type == avatar-male-alt or $type == avatarmale-alt {
+            @if $fontname == 'iconsweets' {
+                content: 'd';
+            }
+            @if $fontname == 'symbolset' {
+                content: '👤'; // Same as 'user'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f007'; // Same as 'user'
+            }
+        }
+        
+        @elseif $type == users or $type == avatars {
+            @if $fontname == 'iconsweets' {
+                content: 'c';
+            }
+            @if $fontname == 'symbolset' {
+                content: '👥';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0c0';
+            }
+        }
+        
+        @elseif $type == users-alt or $type == avatars-alt {
+            @if $fontname == 'iconsweets' {
+                content: 'e';
+            }
+            @if $fontname == 'symbolset' {
+                content: '👥'; // Same as 'users'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0c0'; // Same as 'users'
+            }
+        }
+        
+        @elseif $type == group or $type == user-group or $type == usergroup or $type == avatar-group or $type == avatargroup {
+            @if $fontname == 'iconsweets' {
+                content: 'c';
+            }
+            @if $fontname == 'symbolset' {
+                content: '👥'; // Same as 'users'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0c0'; // Same as 'users'
+            }
+        }
+        
+        @elseif $type == group-alt or $type == user-group-alt or $type == usergroup-alt or $type == avatar-group-alt or $type == avatargroup-alt {
+            @if $fontname == 'iconsweets' {
+                content: 'f';
+            }
+            @if $fontname == 'symbolset' {
+                content: '👥'; // Same as 'users'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0c0'; // Same as 'users'
+            }
+        }
+        
+        @elseif $type == female-user or $type == femaleuser or $type == female-avatar or $type == femaleavatar or $type == user-female or $type == userfemale or $type == avatar-female or $type == avatarfemale {
+            @if $fontname == 'iconsweets' {
+                // No corresponding icon
+            }
+            @if $fontname == 'symbolset' {
+                content: '👧';
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == folder or $type == directory {
+            @if $fontname == 'iconsweets' {
+                content: 'g';
+            }
+            @if $fontname == 'symbolset' {
+                content: '📁';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f07b';
+            }
+        }
+        
+        @elseif $type == folder-open or $type == directory-open {
+            @if $fontname == 'iconsweets' {
+                content: 'g'; // Same as 'folder'
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f07c';
+            }
+        }
+        
+        @elseif $type == heart or $type == heart-full or $type == full-heart or $type == love {
+            @if $fontname == 'iconsweets' {
+                content: 'h'; // Same as 'folder'
+            }
+            @if $fontname == 'symbolset' {
+                content: '♥';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f004';
+            }
+        }
+        
+        @elseif $type == heart-half or $type == half-heart {
+            @if $fontname == 'iconsweets' {
+                // No corresponding icon
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == heart-empty or $type == empty-heart {
+            @if $fontname == 'iconsweets' {
+                // No corresponding icon
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f08a';
+            }
+        }
+        
+        @elseif $type == settings or $type == cog or $type == gear {
+            @if $fontname == 'iconsweets' {
+                content: 'i';
+            }
+            @if $fontname == 'symbolset' {
+                content: '⚙';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f013';
+            }
+        }
+        
+        @elseif $type == settings-alt or $type == cog-alt or $type == gear-alt {
+            @if $fontname == 'iconsweets' {
+                content: 'j';
+            }
+            @if $fontname == 'symbolset' {
+                content: '⚙'; // Same as 'settings'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f013'; // Same as 'settings'
+            }
+        }
+        
+        @elseif $type == settings-group or $type == cogs or $type == gears or $type == cog-alt2 or $type == gear-alt2 {
+            @if $fontname == 'iconsweets' {
+                content: 'k';
+            }
+            @if $fontname == 'symbolset' {
+                content: '⚙'; // Same as 'settings'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f085'; // Same as 'settings'
+            }
+        }
+        
+        @elseif $type == settings-alt2 {
+            @if $fontname == 'iconsweets' {
+                content: 'l';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == tools or $type == wrench {
+            @if $fontname == 'iconsweets' {
+                content: 'm';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0ad';
+            }
+        }
+        
+        @elseif $type == walk {
+            @if $fontname == 'iconsweets' {
+                content: 'n';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == run {
+            @if $fontname == 'iconsweets' {
+                content: 'o';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == man or $type == male {
+            @if $fontname == 'iconsweets' {
+                content: 'p';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == woman or $type == female {
+            @if $fontname == 'iconsweets' {
+                content: 'q';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == beaker or $type == lab or $type == potion {
+            @if $fontname == 'iconsweets' {
+                content: 'r';
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0c3';
+            }
+        }
+        
+        @elseif $type == repeat {
+            @if $fontname == 'iconsweets' {
+                content: 't';
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔁';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f01e';
+            }
+        }
+        
+        @elseif $type == retweet or $type == repeat-alt {
+            @if $fontname == 'iconsweets' {
+                content: 'r';
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f079';
+            }
+        }
+        
+        @elseif $type == refresh or $type == repeat-alt2 {
+            @if $fontname == 'iconsweets' {
+                content: 'u';
+            }
+            @if $fontname == 'symbolset' {
+                content: '↻';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f021';
+            }
+        }
+        
+        @elseif $type == sync or $type == repeat-alt3 {
+            @if $fontname == 'iconsweets' {
+                content: 'u'; // Same as refresh
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f021'; // Same as refresh
+            }
+        }
+        
+        @elseif $type == shuffle or $type == random {
+            @if $fontname == 'iconsweets' {
+                content: 'v';
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔀';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f074';
+            }
+        }
+        
+        @elseif $type == share or $type == action or $type == out or $type == visit {
+            @if $fontname == 'iconsweets' {
+                content: 'w';
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f064';
+            }
+        }
+        
+        @elseif $type == share-alt or $type == action-alt or $type == out-alt or $type == visit-alt {
+            @if $fontname == 'iconsweets' {
+                content: 'w'; // Same as 'share'
+            }
+            @if $fontname == 'symbolset' {
+                content: ''; // Same as 'share'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f045';
+            }
+        }
+        
+        @elseif $type == redo or $type == rotate-right or $type == rotateright {
+            @if $fontname == 'iconsweets' {
+                content: 'w'; // Same as 'share'
+            }
+            @if $fontname == 'symbolset' {
+                content: ''; // Same as 'share'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f01e'; // Same as 'repeat'
+            }
+        }
+        
+        @elseif $type == undo or $type == replay or $type == rotate-left or $type == rotateleft {
+            @if $fontname == 'iconsweets' {
+                content: 'x';
+            }
+            @if $fontname == 'symbolset' {
+                content: '↺';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0e2';
+            }
+        }
+        
+        @elseif $type == reply {
+             @if $fontname == 'iconsweets' {
+                content: 'x'; // Same as 'undo'
+            }
+            @if $fontname == 'symbolset' {
+                content: '↩';
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == lock or $type == locked or $type == private or $type == secure {
+             @if $fontname == 'iconsweets' {
+                content: 'y';
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔒';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f023';
+            }
+        }
+        
+        @elseif $type == unlock or $type == unlocked or $type == public or $type == insecure {
+             @if $fontname == 'iconsweets' {
+                content: 'z';
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔓';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f09c';
+            }
+        }
+        
+        @elseif $type == email or $type == mail or $type == envelope {
+             @if $fontname == 'iconsweets' {
+                content: 'A';
+            }
+            @if $fontname == 'symbolset' {
+                content: '✉';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f003';
+            }
+        }
+        
+        @elseif $type == email-alt or $type == mail-alt or $type == envelope-alt {
+             @if $fontname == 'iconsweets' {
+                content: '@';
+            }
+            @if $fontname == 'symbolset' {
+                content: '✉'; // same as 'email'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0e0';
+            }
+        }
+        
+        @elseif $type == music or $type == musicnote or $type == audio {
+             @if $fontname == 'iconsweets' {
+                content: 'B';
+            }
+            @if $fontname == 'symbolset' {
+                content: '♫';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f001';
+            }
+        }
+        
+        @elseif $type == edit or $type == compose {
+             @if $fontname == 'iconsweets' {
+                content: 'C';
+            }
+            @if $fontname == 'symbolset' {
+                content: '📝';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f044';
+            }
+        }
+        
+        @elseif $type == cart or $type == shopping-cart or $type == shoppingcart {
+             @if $fontname == 'iconsweets' {
+                content: 'D';
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f07a';
+            }
+        }
+        
+        @elseif $type == cart-alt or $type == shopping-cart-alt or $type == shoppingcart-alt {
+             @if $fontname == 'iconsweets' {
+                content: 'E';
+            }
+            @if $fontname == 'symbolset' {
+                content: ''; // same as 'cart'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f07a'; // same as 'cart'
+            }
+        }
+        
+        @elseif $type == video or $type == videos or $type == videocamera {
+             @if $fontname == 'iconsweets' {
+                content: 'F';
+            }
+            @if $fontname == 'symbolset' {
+                content: '📹';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f03d';
+            }
+        }
+        
+        @elseif $type == globe or $type == earth or $type == world {
+             @if $fontname == 'iconsweets' {
+                content: 'G';
+            }
+            @if $fontname == 'symbolset' {
+                content: '🌎';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0ac';
+            }
+        }
+        
+        @elseif $type == upload {
+             @if $fontname == 'iconsweets' {
+                content: 'H';
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f01b';
+            }
+        }
+        
+        @elseif $type == upload-alt {
+             @if $fontname == 'iconsweets' {
+                content: 'H'; // Same as 'upload'
+            }
+            @if $fontname == 'symbolset' {
+                content: ''; // Same as 'upload'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f093';
+            }
+        }
+        
+        @elseif $type == download {
+             @if $fontname == 'iconsweets' {
+                content: 'I';
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f01a';
+            }
+        }
+        
+        @elseif $type == download-alt {
+             @if $fontname == 'iconsweets' {
+                content: 'I'; // Same as 'download'
+            }
+            @if $fontname == 'symbolset' {
+                content: ''; // Same as 'download'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f019';
+            }
+        }
+        
+        @elseif $type == mobile or $type == iphone or $type == cell or $type == cellphone or $type == cell-phone or $type == mobilephone or $type == mobile-phone or $type == smartphone {
+             @if $fontname == 'iconsweets' {
+                content: 'J';
+            }
+            @if $fontname == 'symbolset' {
+                content: '📱';
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == tablet or $type == ipad {
+             @if $fontname == 'iconsweets' {
+                content: 'K';
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f01a';
+            }
+        }
+        
+        @elseif $type == inbox {
+             @if $fontname == 'iconsweets' {
+                content: 'L';
+            }
+            @if $fontname == 'symbolset' {
+                content: '📥';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f01c';
+            }
+        }
+        
+        @elseif $type == cabinet {
+             @if $fontname == 'iconsweets' {
+                content: 'M';
+            }
+            @if $fontname == 'symbolset' {
+                content: '📦';
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == map {
+             @if $fontname == 'iconsweets' {
+                content: 'N';
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f529';
+            }
+        }
+        
+        @elseif $type == desktop or $type == computer or $type == display or $type == monitor {
+             @if $fontname == 'iconsweets' {
+                content: 'O';
+            }
+            @if $fontname == 'symbolset' {
+                content: '💻';
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icons
+            }
+        }
+        
+        @elseif $type == link {
+             @if $fontname == 'iconsweets' {
+                content: 'Q';
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔗';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0c1';
+            }
+        }
+        
+        @elseif $type == link-alt {
+             @if $fontname == 'iconsweets' {
+                content: 'P';
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔗'; // Same as 'link'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0c1'; // Same as 'link'
+            }
+        }
+        
+        @elseif $type == calendar or $type == date {
+             @if $fontname == 'iconsweets' {
+                content: 'S';
+            }
+            @if $fontname == 'symbolset' {
+                content: '📅'; // Same as 'link'
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f073'; // Same as 'link'
+            }
+        }
+        
+        @elseif $type == plane or $type == time {
+             @if $fontname == 'iconsweets' {
+                content: 'T';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f072';
+            }
+        }
+        
+        @elseif $type == scissors or $type == cut {
+             @if $fontname == 'iconsweets' {
+                content: 'U';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0c4';
+            }
+        }
+        
+        @elseif $type == print or $type == printer {
+             @if $fontname == 'iconsweets' {
+                content: 'V';
+            }
+            @if $fontname == 'symbolset' {
+                content: '⎙';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f02f';
+            }
+        }
+        
+        @elseif $type == star or $type == favourite or $type == favorite or $type == fav {
+             @if $fontname == 'iconsweets' {
+                content: 'W';
+            }
+            @if $fontname == 'symbolset' {
+                content: '⋆';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f005';
+            }
+        }
+        
+        @elseif $type == star-empty or $type == empty-star or $type == emptystar {
+             @if $fontname == 'iconsweets' {
+                content: 'W'; // Same as 'star'
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f006';
+            }
+        }
+        
+        @elseif $type == star-half or $type == half-star or $type == halfstar {
+             @if $fontname == 'iconsweets' {
+                // No corresponding icon
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+        
+        @elseif $type == delete or $type == close or $type == remove or $type == x {
+             @if $fontname == 'iconsweets' {
+                content: 'X';
+            }
+            @if $fontname == 'symbolset' {
+                content: '␡';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f00d';
+            }
+        }
+        
+        @elseif $type == delete or $type == close or $type == remove or $type == x {
+             @if $fontname == 'iconsweets' {
+                content: 'X';
+            }
+            @if $fontname == 'symbolset' {
+                content: '␡';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f00d';
+            }
+        }
+        
+        @elseif $type == delete-circle or $type == close-circle or $type == remove-circle or $type == x-circle {
+             @if $fontname == 'iconsweets' {
+                // No corresponding icon
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f05c';
+            }
+        }
+        
+        @elseif $type == delete-sign or $type == close-sign or $type == remove-sign or $type == x-sign {
+             @if $fontname == 'iconsweets' {
+                // No corresponding icon
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f057';
+            }
+        }
+        
+        @elseif $type == add or $type == plus {
+             @if $fontname == 'iconsweets' {
+                content: '+';
+            }
+            @if $fontname == 'symbolset' {
+                content: '+';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f067';
+            }
+        }
+        
+        @elseif $type == add-alt or $type == plus-alt or $type == plus-sign {
+             @if $fontname == 'iconsweets' {
+                // No corresponding icon
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f055';
+            }
+        }
+        
+        @elseif $type == minus or $type == dash or $type == hyphen {
+             @if $fontname == 'iconsweets' {
+                content: '-';
+            }
+            @if $fontname == 'symbolset' {
+                content: '-';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f068';
+            }
+        }
+        
+        @elseif $type == minus-alt or $type == dash-alt or $type == minus-sign {
+             @if $fontname == 'iconsweets' {
+                // No corresponding icon
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f056';
+            }
+        }
+        
+        @elseif $type == flag {
+             @if $fontname == 'iconsweets' {
+                content: 'Z';
+            }
+            @if $fontname == 'symbolset' {
+                content: '⚑';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f024';
+            }
+        }
+        
+        @elseif $type == flag-alt or $type == banner {
+             @if $fontname == 'iconsweets' {
+                content: 'Y';
+            }
+            @if $fontname == 'symbolset' {
+                // No Corresponding Icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No Corresponding Icon
+            }
+        }
+        
+        @elseif $type == warning or $type == alert {
+             @if $fontname == 'iconsweets' {
+                content: '!';
+            }
+            @if $fontname == 'symbolset' {
+                content: '⚠';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f071';
+            }
+        }
+        
+        @elseif $type == chat or $type == comment or $type == talk {
+             @if $fontname == 'iconsweets' {
+                content: '#';
+            }
+            @if $fontname == 'symbolset' {
+                content: '💬';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f075';
+            }
+        }
+        
+        @elseif $type == chat-alt or $type == comment-alt or $type == talk-alt {
+             @if $fontname == 'iconsweets' {
+                // No corresponding icon
+            }
+            @if $fontname == 'symbolset' {
+                content: '';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f075';
+            }
+        }
+        
+        @elseif $type == chats or $type == comments or $type == groupchat {
+             @if $fontname == 'iconsweets' {
+                content: '"';
+            }
+            @if $fontname == 'symbolset' {
+                content: '💬'; // Same as chat
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f075';
+            }
+        }
+        
+        @elseif $type == chats-alt or $type == comments-alt or $type == groupchat-alt {
+             @if $fontname == 'iconsweets' {
+                // No corresponding icon
+            }
+            @if $fontname == 'symbolset' {
+                content: ''; // Same as chat-alt
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0e6';
+            }
+        }
+        
+        @elseif $type == leftarrow or $type == arrowleft or $type == left-arrow or $type == arrow-left or $type == left or $type == back {
+             @if $fontname == 'iconsweets' {
+                content: '<';
+            }
+            @if $fontname == 'symbolset' {
+                content: '⬅';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f060';
+            }
+        }
+        
+        @elseif $type == rightarrow or $type == arrowright or $type == right-arrow or $type == arrow-right or $type == right or $type == forward {
+             @if $fontname == 'iconsweets' {
+                content: '>';
+            }
+            @if $fontname == 'symbolset' {
+                content: '➡';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f061';
+            }
+        }
+        
+        @elseif $type == uparrow or $type == arrowup or $type == up-arrow or $type == arrow-up or $type == up {
+             @if $fontname == 'iconsweets' {
+                content: ']';
+            }
+            @if $fontname == 'symbolset' {
+                content: '⬆';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f063';
+            }
+        }
+        
+        @elseif $type == downarrow or $type == arrowdown or $type == down-arrow or $type == arrow-down or $type == down {
+             @if $fontname == 'iconsweets' {
+                content: '[';
+            }
+            @if $fontname == 'symbolset' {
+                content: '⬇';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f063';
+            }
+        }
+
+        @elseif $type == basket {
+            @if $fontname == 'iconsweets' {
+                content: '$';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+
+        @elseif $type == basket-alt or $type == basket-solid {
+            @if $fontname == 'iconsweets' {
+                content: '%';
+            }
+            @if $fontname == 'symbolset' {
+                // No corresponding icon
+            }
+            @if $fontname == 'fontawesome' {
+                // No corresponding icon
+            }
+        }
+
+        @elseif $type == bookmark {
+            @if $fontname == 'iconsweets' {
+                content: '&';
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔖';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f02e';
+            }
+        }
+
+        @elseif $type == bookmark-alt {
+            @if $fontname == 'iconsweets' {
+                content: "'";
+            }
+            @if $fontname == 'symbolset' {
+                content: '🔖';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f097';
+            }
+        }
+
+        @elseif $type == price-tag or $type == pricetag or $type == money or $type == dollar or $type == dollarsign or $type == cost or $type == dollar-sign {
+            @if $fontname == 'iconsweets' {
+                content: '(';
+            }
+            @if $fontname == 'symbolset' {
+                content: '💲';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0d6';
+            }
+        }
+
+        @elseif $type == price or $type == price-tag or $type == pricetag or $type == money or $type == dollar or $type == dollarsign or $type == cost or $type == dollar-sign {
+            @if $fontname == 'iconsweets' {
+                content: '(';
+            }
+            @if $fontname == 'symbolset' {
+                content: '💲';
+            }
+            @if $fontname == 'fontawesome' {
+                content: '\f0d6';
+            }
+        }
+
+        // Throw a warning if that $type doesn't exist
+        @else {
+            @warn "We can't find the icon you specified in #{$set}. You may have spelled it wrong or it hasn't been added to the list yet. If you think it's missing, please add it yourself or make an issue in the scaffold github.";
+        }
+    }
+
+    @else if $set == social {
+        // Icon naming for the Social Set
+        @if $type == facebook {
+            content: '';
+        }
+        @elseif $type == fblike {
+            content: '👍';
+        }
+
+        @elseif $type == twitter {
+            content: '';
+        }
+
+        @elseif $type == pinterest {
+            content: '';
+        }
+
+        @elseif $type == googleplus {
+            content: '';
+        }
+
+        @elseif $type == linkedin {
+            content: '';
+        }
+
+        @elseif $type == youtube {
+            content: '';
+        }
+
+        @elseif $type == vimeo {
+            content: '';
+        }
+
+        @elseif $type == email {
+            content: '✉';
+        }
+
+        @elseif $type == rss {
+            content: '';
+        }
+
+        @elseif $type == steam {
+            content: '';
+        }
+
+        @elseif $type == quora {
+            content: '';
+        }
+
+        @elseif $type == vine {
+            content: '';
+        }
+
+        @elseif $type == letterboxd {
+            content: '';
+        }
+
+        @elseif $type == etsy {
+            content: '';
+        }
+
+        @elseif $type == delicious {
+            content: '';
+        }
+
+        // Throw a warning if that $type doesn't exist
+        @else {
+            @warn "We can't find the icon you specified in #{$set}. You may have spelled it wrong or it hasn't been added to the list yet. If you think it's missing, please add it yourself or make an issue in the scaffold github.";
+        }
+    }
+}

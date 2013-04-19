@@ -1,0 +1,143 @@
+// ==========================================================================
+// COLOURS & GRADIENTS
+// ==========================================================================
+
+    $darkblue: #2F343B;
+    $beige: #7E827A;
+    $teal: #306E73;
+    
+
+// ==========================================================================
+// MARGINS + TEXT
+// ==========================================================================
+
+    $margin: 10/16 *1rem; // use multipliers to scale
+    // ex:  padding: $margin*2;
+    //      padding: $margin/2;
+
+    $default-border-radius: 4px; // Default rounded corners
+    // ex:  @include border-radius();
+
+    $line: 1.5;
+    $text: 14/16 *1rem; // Default
+        $xsmall-text: 12 /16*1rem;
+        $small-text: 13 /16*1rem;
+        $medium-text: 16 /16*1rem;
+        $large-text: 18 /16*1rem;
+        $xlarge-text: 24 /16*1rem;
+
+    // Default fonts (override if desired)
+    $sansstack: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
+    $serifstack: Georgia, 'Droid Serif', serif;
+    
+    $font: $sansstack;
+
+// ==========================================================================
+// GENERAL
+// ==========================================================================
+
+* {
+    @include box-sizing(border-box);
+}
+
+html {
+    font-size: 100%;
+
+    -webkit-text-size-adjust: none;
+}
+
+body {
+    font-family: $font;
+    font-size: $text;
+    line-height: $line;
+    
+    background: $darkblue;
+}
+
+// WITHIN THE CONTENT
+a {
+    text-decoration: none;
+}
+
+hr {
+    height: 1px;
+    margin: $margin*2 0;
+    border: 0;
+}
+
+// FORM ELEMENTS
+// see module "form"
+
+// BUTTON ELEMENTS
+// see module "actions"
+
+// ==========================================================================
+// TITLES
+// ==========================================================================
+
+h1, h2, h3, h4, h5, h6 {
+    margin: $margin 0;
+    font-weight: bold;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+h1 {
+    font-size: 22px;
+    font-weight: normal;
+    line-height: 1;
+}
+
+h2 {
+    font-size: $large-text;
+    font-weight: normal;
+}
+
+h3 {
+    font-size: $medium-text;
+    font-weight: normal;
+}
+
+h4, h5, h6 {
+    font-weight: normal;
+    font-size: $text+1; 
+}
+
+// ==========================================================================
+// LISTS
+// ==========================================================================
+
+// If you wish to remove all list styling, use this mixin
+@mixin kill-list {
+    margin: 0;
+    padding: 0;
+
+    > li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+ul, ol {
+    margin: $margin 0 $margin $margin*3;
+
+    li {
+        margin: $margin/2 0;
+    }
+}
+ul {
+    list-style-type: disc;
+}
+ol {
+    list-style-type: decimal;
+}
+
+img {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+}
