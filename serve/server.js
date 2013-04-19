@@ -1,18 +1,18 @@
-var express = require("express")
-var port    = 8001
-var scrape = require("./scrape.js")
-
-var app = express.createServer()
+var express = require("express");
+var app = express();
+var port = 8001
+var db = require("./db.js")
 
 app.get("/", function(req, rsp){
   rsp.send("welcome to the mtg card api\n")
 })
 
 app.get("/:cardnum?", function(req, rsp) {
-    scrape.card(req.params.cardnum, function(card){
+
+    db.card(req.params.cardnum, function(card){
         if(card){
             var body = JSON.stringify(card, null, 2) + "\n"
-            rsp.send(body, {"Content-Type": "application/json"})
+            rsp.send(body)
         } else {
             rsp.send("card not found\n", 404)
         }

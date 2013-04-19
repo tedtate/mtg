@@ -4,6 +4,7 @@
     "description": "an mtg search app",
     "dependencies": {
         "jsdom": "0.5.3",
-        "express": "2.5.0"
+        "express": "3.2.0",
+        "redis": "0.8.3"
     }
 }
