@@ -8,7 +8,7 @@ exports.card = function(key, cb){
             cb(reply)
         } else {
             scrape.card(key, function(card) {
-                client.hmset(key, 'cardname', card.cardname, 'cmc', card.cmc, 'type', card.type)xwxw
+                client.hmset(key, 'cardname', card.cardname, 'cmc', card.cmc, 'type', card.type)
                 cb(card)
             })
         }
