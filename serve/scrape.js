@@ -3,17 +3,19 @@ var fs = require('fs')
 
 exports.card = function(num, cb){
 
-    var url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=' + num,
+    var source = 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=' + num,
         fn = 'saved/' + num + '.html'
 
-    fs.open(fn, 'r', function(err, fd) {
-        var html = fn
+    fs.readFile(fn, {'encoding': 'UTF-8'}, function(err, data) {
+        var fromFile = false
 
         if(err === null) {
-            html = fd
+            source = data
+            fromFile = true
+            console.log('loaded dat thang')
         }
 
-        jsdom.env(url, ['http://code.jquery.com/jquery.js'], function(err, window){
+        jsdom.env(source, ['http://code.jquery.com/jquery.js'], function(err, window){
             if(err) return cb(null)
 
             var $ = window.$,
@@ -32,6 +34,13 @@ exports.card = function(num, cb){
                 'rarity': details.find('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_rarityRow .value').text().trim(),
                 'cardnumber': details.find('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_numberRow .value').text().trim(),
                 'artist': details.find('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_artistRow .value').text().trim()
+            }
+
+            if(!fromFile) {
+                fs.writeFile(fn, window.document.documentElement.outerHTML, function(err) {
+                    if(err) throw err;
+                    console.log('saved dat thang')
+                })
             }
 
             cb(card)
