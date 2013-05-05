@@ -2,10 +2,19 @@
 // COLOURS & GRADIENTS
 // ==========================================================================
 
+    // Interface colours
     $darkblue: #2F343B;
+    $xdarkblue: #2A2D34;
     $beige: #7E827A;
     $teal: #306E73;
     
+    // Card colours
+    $white: white;
+    $green: #1EA800;
+    $blue: #008BBE;
+    $red: #FF4924;
+    $black: black;
+
 
 // ==========================================================================
 // MARGINS + TEXT
@@ -113,12 +122,7 @@ h4, h5, h6 {
 @mixin kill-list {
     margin: 0;
     padding: 0;
-
-    > li {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
+    list-style: none;
 }
 
 ul, ol {

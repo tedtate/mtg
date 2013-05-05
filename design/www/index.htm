@@ -5,19 +5,89 @@
 </head>
 <body class="home">
     <form class="main-search">
-        <div class="main-search-box">
-            <p>Is this light?</p>
-            <input type="search" placeholder="Search cards by name&hellip;" class="main-search-input">
+        <div class="main-search-wrap">
+            <div class="main-search-box">
+                <input type="search" placeholder="Search cards by name&hellip;" class="main-search-input" tabindex="1">
 
-            <a href="#" class="main-search-advanced-toggle">Toggle Advanced Search</a>
+                <a href="#" class="main-search-advanced-toggle">Toggle Advanced Search</a>
+            </div>
+            <input type="submit" value="Search" class="main-search-submit" tabindex="2">
+
+            <ul class="main-search-results">
+                <li class="main-search-result">
+                    <a href="#">
+                        <span class="main-search-result-cardname">Azusa, Lost but Seeking</span>
+                        <span class="main-search-result-manacost green">1</span>
+                        <span class="main-search-result-manacost grey">4</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="main-search-advanced-options">
+                <fieldset>
+                    <legend>Search by:</legend>
+
+                    <label class="checkbox">
+                        <input type="checkbox" checked="checked">
+                        <span>Name</span>
+                    </label>
+
+                    <label class="checkbox">
+                        <input type="checkbox">
+                        <span>Type</span>
+                    </label>
+
+                    <label class="checkbox">
+                        <input type="checkbox">
+                        <span>Text</span>
+                    </label>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Filter by:</legend>
+
+                    <a class="togglestate white on">
+                        White
+                    </a>
+
+                    <a class="togglestate green">
+                        Green
+                    </a>
+
+                    <a class="togglestate blue on">
+                        Blue
+                    </a>
+
+                    <a class="togglestate red">
+                        Red
+                    </a>
+
+                    <a class="togglestate black off">
+                        Black
+                    </a>
+                </fieldset>
+            </div>
         </div>
-        <input type="submit" value="Search" class="main-search-submit">
     </form>
 
     <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
     <script type="text/javascript">
         (function($){
-        });
+
+            $('.main-search-input').keypress(function(){
+                $(this).closest('form').addClass('active');
+            }).blur(function() {
+                $(this).closest('form').removeClass('active');
+            });
+
+            $('.main-search-advanced-toggle').click(function(e) {
+                e.preventDefault();
+
+                $(this).closest('form').toggleClass('active advanced');
+            })
+
+        })(jQuery);
     </script>
+    <script src="http://localhost:35729/livereload.js?snipver=1"></script>
 </body>
 </html>

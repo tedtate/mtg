@@ -1,0 +1,58 @@
+input,
+button,
+select {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    -webkit-appearance: none;
+
+    position: relative;
+    top: -2px;
+
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    padding: $margin;
+
+    background: transparent;
+    border: 1px solid $beige;
+
+    // If selected...
+    &:checked {
+        background: $beige;
+
+        // Selected character
+        &:after {
+            position: absolute;
+            color: $xdarkblue;
+        }
+    }
+}
+
+input[type="checkbox"] {
+    // If checked...
+    &:checked {
+        // CHECKMARK character
+        &:after {
+            content: '✓';
+            top: 0;
+            left: 0;
+            
+            width: 100%;
+            
+            text-align: center;
+            font-family: "symbolset";
+            line-height: 1.5;
+            font-size: 18 /16*1rem;
+            font-weight: bold;
+        }
+    }
+}
+
+.checkbox {
+    input {
+        margin-right: $margin;
+    }
+}
