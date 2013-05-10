@@ -5,7 +5,7 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
     top: 50%;
     margin-top: -60px;
     text-align: center;
-    
+
     @include transition(top 0.3s ease);
 
     &.active {
@@ -15,7 +15,7 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
 
 .main-search-wrap {
     overflow: hidden;
-    
+
     width: 90%;
     margin: 0 auto;
     padding-right: $submitwidth;
@@ -27,9 +27,13 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
 
     display: inline-block;
     width: 100%;
-    
+
     p {
         font-weight: 300;
+    }
+
+    .results & {
+        margin-bottom: $margin*2;
     }
 }
 
@@ -38,7 +42,7 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
     padding: $margin*2 $margin*3;
     padding-right: $margin*5;
 
-    background: $beige;    
+    background: $beige;
     border: none;
 
     color: white;
@@ -46,7 +50,7 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
     font-weight: 300;
 
     -webkit-appearance: none;
-    
+
     &::-webkit-placeholder,
     &:-moz-placeholder,
     &::-moz-placeholder,
@@ -62,7 +66,7 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
     right: $margin*4;
     top: 50%;
     margin-top: -17.5 /16*1rem;
-    
+
     .advanced &:before {
         color: $darkblue;
     }
@@ -75,14 +79,14 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
     padding: $margin*2 $margin*3;
     margin-left: $margin*3;
     margin-right: -$submitwidth;
-    
+
     background: $teal;
     border: none;
-    
+
     font-size: 32 /16*1rem;
     font-weight: 300;
     color: white;
-    
+
     -webkit-appearance: none;
 }
 
@@ -92,31 +96,31 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
     -webkit-transform: scale(0);
 
     float: right;
-    
+
     width: 450 /16*1rem;
     padding: 30 /16*1rem;
     margin-top: $margin*2;
     margin-right: -$submitwidth;
-    
+
     background: $xdarkblue;
 
     text-align: left;
     color: rgba(white, 0.5);
-    
-    @include transition(all 0.3s ease);
-    
+
+    @include ceaser-transition($easeOutCubic, all, 0.3s);
+
     &:after,
     &:before {
         content: '';
-        
+
         position: absolute;
         bottom: 100%;
-        
+
         height: 0;
         width: 0;
-        
+
         border: solid transparent;
-        
+
         pointer-events: none;
     }
 
@@ -143,12 +147,12 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
     fieldset {
         margin: 0 (-$margin*3);
         padding: $margin*3;
-        
+
         border-bottom: 2px solid $darkblue;
-        
+
         &:first-child {
             padding-top: 0;
-            
+
             legend {
                 top: 0;
             }
@@ -158,7 +162,7 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
     legend {
         position: relative;
         top: $margin*3;
-        
+
         margin-bottom: $margin*3;
 
         text-align: left;
@@ -179,7 +183,7 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
     input[type="checkbox"] {
         width: 30 /16*1rem;
         height: 30 /16*1rem;
-        
+
         &:checked:after {
             line-height: 1.9;
         }
@@ -193,39 +197,39 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
         @include hide-text;
 
         position: relative;
-                    
+
         display: inline-block;
-        
+
         width: 34 /16*1rem;
         height: 34 /16*1rem;
         margin-right: $margin*3;
-        
+
         border: 2px solid transparent;
         @include border-radius(34 /16*1rem);
-        
+
         cursor: pointer;
-        
+
         &.off:after {
             content: '␡';
-            
+
             position: absolute;
             top: 0;
             left: 0;
-            
+
             width: 100%;
             text-align: center;
             text-indent: 0;
-            
+
             font-family: "symbolset";
             font-size: 20 /16*1rem;
             line-height: 1.85;
             color: $darkblue;
         }
-        
+
         @each $type in white $white, green $green, blue $blue, red $red, black $black {
             &.#{nth($type, 1)} {
                 border-color: #{nth($type, 2)};
-                
+
                 &.on {
                     background: #{nth($type, 2)};
                 }
@@ -243,25 +247,61 @@ $submitwidth: ((250 /16*1rem)+($margin*3));
 
     clear: both;
 
+    display: none; // toggled visible
     width: 100%;
-    margin-top: $margin*2;
-    
+
     background: $xdarkblue;
+
+    .results & {
+        display: block;
+    }
 }
 
 .main-search-result {
     text-align: left;
-    
+
     font-size: 32 /16*1rem;
-    
+
     a {
         display: block;
         padding: $margin*2 $margin*3.5;
-        
+
         color: white;
-        
+        line-height: 1;
+
         &:hover {
             background: rgba($beige, 0.25);
         }
+    }
+
+    &:first-child a {
+        padding-top: $margin*3;
+    }
+
+    &:last-child a {
+        padding-bottom: $margin*3;
+    }
+}
+
+.main-search-result-manacost {
+    display: inline-block;
+    width: 34 /16*1rem;
+    height: 34 /16*1rem;
+
+    border-radius: 34 /16*1rem;
+
+    font-size: 28 /16*1rem;
+    font-weight: bold;
+    line-height: 32 /16*1rem;
+    text-align: center;
+
+    @each $type in white $white, green $green, blue $blue, red $red, black $black, grey $grey {
+        &.#{nth($type, 1)} {
+            background: #{nth($type, 2)};
+        }
+    }
+
+    .main-search-result-cardname + & {
+        margin-left: $margin*3;
     }
 }

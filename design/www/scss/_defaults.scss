@@ -7,13 +7,14 @@
     $xdarkblue: #2A2D34;
     $beige: #7E827A;
     $teal: #306E73;
-    
+
     // Card colours
     $white: white;
     $green: #1EA800;
     $blue: #008BBE;
     $red: #FF4924;
     $black: black;
+    $grey: #6B6D79;
 
 
 // ==========================================================================
@@ -38,7 +39,7 @@
     // Default fonts (override if desired)
     $sansstack: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
     $serifstack: Georgia, 'Droid Serif', serif;
-    
+
     $font: $sansstack;
 
 // ==========================================================================
@@ -59,7 +60,7 @@ body {
     font-family: $font;
     font-size: $text;
     line-height: $line;
-    
+
     background: $darkblue;
 }
 
@@ -111,7 +112,7 @@ h3 {
 
 h4, h5, h6 {
     font-weight: normal;
-    font-size: $text+1; 
+    font-size: $text+1;
 }
 
 // ==========================================================================

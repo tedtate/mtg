@@ -1,3 +1,4 @@
 node_modules
 .DS_Store
 *.scssc
+/design/www/.sass-cache/

@@ -80,20 +80,20 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   font-style: normal;
 }
 
-/* line 48, scss/_defaults.scss */
+/* line 49, scss/_defaults.scss */
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-/* line 52, scss/_defaults.scss */
+/* line 53, scss/_defaults.scss */
 html {
   font-size: 100%;
   -webkit-text-size-adjust: none;
 }
 
-/* line 58, scss/_defaults.scss */
+/* line 59, scss/_defaults.scss */
 body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
   font-size: 0.875rem;
@@ -101,73 +101,73 @@ body {
   background: #2f343b;
 }
 
-/* line 67, scss/_defaults.scss */
+/* line 68, scss/_defaults.scss */
 a {
   text-decoration: none;
 }
 
-/* line 71, scss/_defaults.scss */
+/* line 72, scss/_defaults.scss */
 hr {
   height: 1px;
   margin: 1.25rem 0;
   border: 0;
 }
 
-/* line 87, scss/_defaults.scss */
+/* line 88, scss/_defaults.scss */
 h1, h2, h3, h4, h5, h6 {
   margin: 0.625rem 0;
   font-weight: bold;
 }
-/* line 91, scss/_defaults.scss */
+/* line 92, scss/_defaults.scss */
 h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child {
   margin-top: 0;
 }
 
-/* line 96, scss/_defaults.scss */
+/* line 97, scss/_defaults.scss */
 h1 {
   font-size: 22px;
   font-weight: normal;
   line-height: 1;
 }
 
-/* line 102, scss/_defaults.scss */
+/* line 103, scss/_defaults.scss */
 h2 {
   font-size: 1.125rem;
   font-weight: normal;
 }
 
-/* line 107, scss/_defaults.scss */
+/* line 108, scss/_defaults.scss */
 h3 {
   font-size: 1rem;
   font-weight: normal;
 }
 
-/* line 112, scss/_defaults.scss */
+/* line 113, scss/_defaults.scss */
 h4, h5, h6 {
   font-weight: normal;
   font-size: 1.875rem;
 }
 
-/* line 128, scss/_defaults.scss */
+/* line 129, scss/_defaults.scss */
 ul, ol {
   margin: 0.625rem 0 0.625rem 1.875rem;
 }
-/* line 131, scss/_defaults.scss */
+/* line 132, scss/_defaults.scss */
 ul li, ol li {
   margin: 0.3125rem 0;
 }
 
-/* line 135, scss/_defaults.scss */
+/* line 136, scss/_defaults.scss */
 ul {
   list-style-type: disc;
 }
 
-/* line 138, scss/_defaults.scss */
+/* line 139, scss/_defaults.scss */
 ol {
   list-style-type: decimal;
 }
 
-/* line 142, scss/_defaults.scss */
+/* line 143, scss/_defaults.scss */
 img {
   display: inline-block;
   max-width: 100%;
@@ -260,8 +260,12 @@ input[type="checkbox"]:checked:after {
 .main-search-box p {
   font-weight: 300;
 }
+/* line 35, scss/modules/_search.scss */
+.results .main-search-box {
+  margin-bottom: 1.25rem;
+}
 
-/* line 36, scss/modules/_search.scss */
+/* line 40, scss/modules/_search.scss */
 .main-search-input {
   width: 100%;
   padding: 1.25rem 1.875rem;
@@ -273,12 +277,12 @@ input[type="checkbox"]:checked:after {
   font-weight: 300;
   -webkit-appearance: none;
 }
-/* line 53, scss/modules/_search.scss */
+/* line 57, scss/modules/_search.scss */
 .main-search-input::-webkit-placeholder, .main-search-input:-moz-placeholder, .main-search-input::-moz-placeholder, .main-search-input::-ms-input-placeholder {
   opacity: 50%;
 }
 
-/* line 58, scss/modules/_search.scss */
+/* line 62, scss/modules/_search.scss */
 .main-search-advanced-toggle {
   position: relative;
   font-size: 1px;
@@ -317,12 +321,12 @@ input[type="checkbox"]:checked:after {
 .main-search-advanced-toggle:before {
   content: '⚙';
 }
-/* line 66, scss/modules/_search.scss */
+/* line 70, scss/modules/_search.scss */
 .advanced .main-search-advanced-toggle:before {
   color: #2f343b;
 }
 
-/* line 71, scss/modules/_search.scss */
+/* line 75, scss/modules/_search.scss */
 .main-search-submit {
   float: left;
   min-width: 15.625rem;
@@ -337,7 +341,7 @@ input[type="checkbox"]:checked:after {
   -webkit-appearance: none;
 }
 
-/* line 89, scss/modules/_search.scss */
+/* line 93, scss/modules/_search.scss */
 .main-search-advanced-options {
   max-height: 0;
   opacity: 0;
@@ -350,12 +354,13 @@ input[type="checkbox"]:checked:after {
   background: #2a2d34;
   text-align: left;
   color: rgba(255, 255, 255, 0.5);
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  -webkit-transition-delay: 0ms;
+  -moz-transition: all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0ms;
+  -o-transition: all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0ms;
+  transition: all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0ms;
 }
-/* line 109, scss/modules/_search.scss */
+/* line 113, scss/modules/_search.scss */
 .main-search-advanced-options:after, .main-search-advanced-options:before {
   content: '';
   position: absolute;
@@ -365,41 +370,41 @@ input[type="checkbox"]:checked:after {
   border: solid transparent;
   pointer-events: none;
 }
-/* line 123, scss/modules/_search.scss */
+/* line 127, scss/modules/_search.scss */
 .main-search-advanced-options:after {
   border-color: rgba(42, 45, 52, 0);
   border-bottom-color: #2a2d34;
   border-width: 1.25rem;
   right: 19.1rem;
 }
-/* line 130, scss/modules/_search.scss */
+/* line 134, scss/modules/_search.scss */
 .main-search-advanced-options:before {
   border-color: rgba(47, 52, 59, 0);
   border-bottom-color: #2f343b;
   border-width: 2.1875rem;
   right: 18.2rem;
 }
-/* line 137, scss/modules/_search.scss */
+/* line 141, scss/modules/_search.scss */
 .advanced .main-search-advanced-options {
   max-height: 28.125rem;
   opacity: 1;
   -webkit-transform: scale(1);
 }
-/* line 143, scss/modules/_search.scss */
+/* line 147, scss/modules/_search.scss */
 .main-search-advanced-options fieldset {
   margin: 0 -1.875rem;
   padding: 1.875rem;
   border-bottom: 2px solid #2f343b;
 }
-/* line 149, scss/modules/_search.scss */
+/* line 153, scss/modules/_search.scss */
 .main-search-advanced-options fieldset:first-child {
   padding-top: 0;
 }
-/* line 152, scss/modules/_search.scss */
+/* line 156, scss/modules/_search.scss */
 .main-search-advanced-options fieldset:first-child legend {
   top: 0;
 }
-/* line 158, scss/modules/_search.scss */
+/* line 162, scss/modules/_search.scss */
 .main-search-advanced-options legend {
   position: relative;
   top: 1.875rem;
@@ -409,29 +414,29 @@ input[type="checkbox"]:checked:after {
   font-weight: normal;
   line-height: 1;
 }
-/* line 170, scss/modules/_search.scss */
+/* line 174, scss/modules/_search.scss */
 .main-search-advanced-options label {
   font-size: 1.25rem;
   color: rgba(255, 255, 255, 0.75);
 }
-/* line 175, scss/modules/_search.scss */
+/* line 179, scss/modules/_search.scss */
 .main-search-advanced-options .checkbox {
   margin-right: 1.25rem;
 }
-/* line 179, scss/modules/_search.scss */
+/* line 183, scss/modules/_search.scss */
 .main-search-advanced-options input[type="checkbox"] {
   width: 1.875rem;
   height: 1.875rem;
 }
-/* line 183, scss/modules/_search.scss */
+/* line 187, scss/modules/_search.scss */
 .main-search-advanced-options input[type="checkbox"]:checked:after {
   line-height: 1.9;
 }
-/* line 188, scss/modules/_search.scss */
+/* line 192, scss/modules/_search.scss */
 .main-search-advanced-options input:checked + span {
   color: white;
 }
-/* line 192, scss/modules/_search.scss */
+/* line 196, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate {
   text-indent: -119988px;
   overflow: hidden;
@@ -449,7 +454,7 @@ input[type="checkbox"]:checked:after {
   border-radius: 2.125rem;
   cursor: pointer;
 }
-/* line 208, scss/modules/_search.scss */
+/* line 212, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.off:after {
   content: '␡';
   position: absolute;
@@ -463,90 +468,143 @@ input[type="checkbox"]:checked:after {
   line-height: 1.85;
   color: #2f343b;
 }
-/* line 226, scss/modules/_search.scss */
+/* line 230, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.white {
   border-color: white;
 }
-/* line 229, scss/modules/_search.scss */
+/* line 233, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.white.on {
   background: white;
 }
-/* line 233, scss/modules/_search.scss */
+/* line 237, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.white.off {
   background: white;
 }
-/* line 226, scss/modules/_search.scss */
+/* line 230, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.green {
   border-color: #1ea800;
 }
-/* line 229, scss/modules/_search.scss */
+/* line 233, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.green.on {
   background: #1ea800;
 }
-/* line 233, scss/modules/_search.scss */
+/* line 237, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.green.off {
   background: #1ea800;
 }
-/* line 226, scss/modules/_search.scss */
+/* line 230, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.blue {
   border-color: #008bbe;
 }
-/* line 229, scss/modules/_search.scss */
+/* line 233, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.blue.on {
   background: #008bbe;
 }
-/* line 233, scss/modules/_search.scss */
+/* line 237, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.blue.off {
   background: #008bbe;
 }
-/* line 226, scss/modules/_search.scss */
+/* line 230, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.red {
   border-color: #ff4924;
 }
-/* line 229, scss/modules/_search.scss */
+/* line 233, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.red.on {
   background: #ff4924;
 }
-/* line 233, scss/modules/_search.scss */
+/* line 237, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.red.off {
   background: #ff4924;
 }
-/* line 226, scss/modules/_search.scss */
+/* line 230, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.black {
   border-color: black;
 }
-/* line 229, scss/modules/_search.scss */
+/* line 233, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.black.on {
   background: black;
 }
-/* line 233, scss/modules/_search.scss */
+/* line 237, scss/modules/_search.scss */
 .main-search-advanced-options .togglestate.black.off {
   background: black;
 }
 
-/* line 241, scss/modules/_search.scss */
+/* line 245, scss/modules/_search.scss */
 .main-search-results {
   margin: 0;
   padding: 0;
   list-style: none;
   clear: both;
+  display: none;
   width: 100%;
-  margin-top: 1.25rem;
   background: #2a2d34;
 }
+/* line 255, scss/modules/_search.scss */
+.results .main-search-results {
+  display: block;
+}
 
-/* line 252, scss/modules/_search.scss */
+/* line 260, scss/modules/_search.scss */
 .main-search-result {
   text-align: left;
   font-size: 2rem;
 }
-/* line 257, scss/modules/_search.scss */
+/* line 265, scss/modules/_search.scss */
 .main-search-result a {
   display: block;
   padding: 1.25rem 2.1875rem;
   color: white;
+  line-height: 1;
 }
-/* line 263, scss/modules/_search.scss */
+/* line 272, scss/modules/_search.scss */
 .main-search-result a:hover {
   background: rgba(126, 130, 122, 0.25);
+}
+/* line 277, scss/modules/_search.scss */
+.main-search-result:first-child a {
+  padding-top: 1.875rem;
+}
+/* line 281, scss/modules/_search.scss */
+.main-search-result:last-child a {
+  padding-bottom: 1.875rem;
+}
+
+/* line 286, scss/modules/_search.scss */
+.main-search-result-manacost {
+  display: inline-block;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 2.125rem;
+  font-size: 1.75rem;
+  font-weight: bold;
+  line-height: 2rem;
+  text-align: center;
+}
+/* line 299, scss/modules/_search.scss */
+.main-search-result-manacost.white {
+  background: white;
+}
+/* line 299, scss/modules/_search.scss */
+.main-search-result-manacost.green {
+  background: #1ea800;
+}
+/* line 299, scss/modules/_search.scss */
+.main-search-result-manacost.blue {
+  background: #008bbe;
+}
+/* line 299, scss/modules/_search.scss */
+.main-search-result-manacost.red {
+  background: #ff4924;
+}
+/* line 299, scss/modules/_search.scss */
+.main-search-result-manacost.black {
+  background: black;
+}
+/* line 299, scss/modules/_search.scss */
+.main-search-result-manacost.grey {
+  background: #6b6d79;
+}
+/* line 304, scss/modules/_search.scss */
+.main-search-result-cardname + .main-search-result-manacost {
+  margin-left: 1.875rem;
 }
