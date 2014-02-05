@@ -1,10 +1,16 @@
 {
-    "name": "mtg",
-    "version": "0.1.0",
-    "description": "an mtg search app",
-    "dependencies": {
-        "jsdom": "0.5.3",
-        "express": "3.2.0",
-        "redis": "0.8.3"
-    }
+  "name": "mtg",
+  "version": "0.1.0",
+  "description": "an mtg search app",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jane-doe/node-example.git"
+  },
+  "dependencies": {
+    "jsdom": "0.5.3",
+    "express": "3.2.0",
+    "redis": "0.8.3",
+    "redis-url": "~0.2.0"
+  }
 }
