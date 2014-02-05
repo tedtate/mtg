@@ -7,12 +7,12 @@ exports.card = function(num, cb){
         fn = 'saved/' + num + '.html'
 
     fs.readFile(fn, {'encoding': 'UTF-8'}, function(err, data) {
-        var fromFile = false
+        var fromFile = true
 
-        if(err === null) {
-            source = data
-            fromFile = true
-        }
+        // if(err === null) {
+        //     source = data
+        //     fromFile = true
+        // }
 
         jsdom.env(source, ['http://code.jquery.com/jquery.js'], function(err, window){
             if(err) return cb(null)

@@ -2,10 +2,10 @@
   "name": "mtg",
   "version": "0.1.0",
   "description": "an mtg search app",
-  "main": "server.js",
+  "main": "serve/server.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jane-doe/node-example.git"
+    "url": "https://github.com/tedtate/mtg"
   },
   "dependencies": {
     "jsdom": "0.5.3",
