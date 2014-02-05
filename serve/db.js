@@ -10,6 +10,7 @@ exports.card = function(key, debug, cb){
             scrape.card(key, function(card) {
                 client.hmset(key,
                     'cardname', card.cardname,
+                    'cost', card.cost,
                     'cmc', card.cmc,
                     'type', card.type,
                     'power', card.power,

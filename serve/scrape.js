@@ -12,7 +12,6 @@ exports.card = function(num, cb){
         if(err === null) {
             source = data
             fromFile = true
-            console.log('loaded dat thang')
         }
 
         jsdom.env(source, ['http://code.jquery.com/jquery.js'], function(err, window){
@@ -20,10 +19,16 @@ exports.card = function(num, cb){
 
             var $ = window.$,
                 details = $('.cardDetails .smallGreyMono:nth-child(2)'),
-                pt = details.find('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_ptRow .value').text().split('/')
+                pt = details.find('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_ptRow .value').text().split('/'),
+                cost = details.find('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_manaRow .value img')
+                    .map(function(i,elem) { return $(this).attr('alt'); }).get().join(','),
+                image = details.find('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_cardImage');
             
+
             card = {
                 'cardname': details.find('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_nameRow .value').text().trim(),
+                'image': '',
+                'cost': cost,
                 'cmc': details.find('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_cmcRow .value').text().trim(),
                 'type': details.find('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_typeRow .value').text().trim(),
                 'power': (pt[0] || '').trim(),
@@ -39,7 +44,6 @@ exports.card = function(num, cb){
             if(!fromFile) {
                 fs.writeFile(fn, window.document.documentElement.outerHTML, function(err) {
                     if(err) throw err;
-                    console.log('saved dat thang')
                 })
             }
 
