@@ -8,6 +8,10 @@ app.get('/', function(req, rsp){
   rsp.send('welcome to the mtg card api\n')
 })
 
+app.get('/favicon.ico', function(req, rsp) {
+    rsp.send('icon!', 404);
+})
+
 app.get("/:cardnum?", function(req, rsp) {
     db.card(req.params.cardnum, SCRAPE_DEBUG, function(card){
         if(card){
@@ -21,10 +25,6 @@ app.get("/:cardnum?", function(req, rsp) {
 
 app.get('*', function(req, rsp){
     rsp.send('not found\n', 404)
-})
-
-app.get('/favicon.ico', function(req, rsp) {
-    rsp.send('icon!', 404);
 })
 
 app.listen(port)
