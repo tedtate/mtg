@@ -1,15 +1,11 @@
 var express = require("express");
 var app = express();
-var port = 5000
+var port = 80
 var db = require("./db.js")
 var SCRAPE_DEBUG = true
 
 app.get('/', function(req, rsp){
   rsp.send('welcome to the mtg card api\n')
-})
-
-app.get('/favicon.ico', function(req, rsp) {
-    rsp.send('icon!');
 })
 
 app.get("/:cardnum?", function(req, rsp) {
@@ -25,6 +21,10 @@ app.get("/:cardnum?", function(req, rsp) {
 
 app.get('*', function(req, rsp){
     rsp.send('not found\n', 404)
+})
+
+app.get('/favicon.ico', function(req, rsp) {
+    rsp.send('icon!', 404);
 })
 
 app.listen(port)
